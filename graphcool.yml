@@ -1,0 +1,60 @@
+# References the data model
+types: ./types.graphql
+
+functions:
+  authenticate:
+    type: resolver
+    schema: src/authentication/authenticate.graphql
+    handler:
+      code:
+        src: src/authentication/authenticate.js
+        environment:
+          LOGIN_API_KEY: $LOGIN_API_KEY
+
+permissions:
+  # everyone can read everything
+  - operation: Post.read
+  - operation: User.read
+  - operation: Comment.read
+
+  # These are all untested and probably very wrong
+  # authenticated user can create posts, comments
+  - operation: Post.create
+    authenticated: true
+    query: src/permissions/Post.graphql:isOwnerCreate
+  - operation: Comment.create
+    authenticated: true
+    query: src/permissions/Comment.graphql:isOwnerCreate
+
+  # owner can edit posts, comments
+  - operation: Post.update
+    authenticated: true
+    query: src/permissions/Post.graphql:isOwner
+  - operation: Comment.update
+    authenticated: true
+    query: src/permissions/Comment.graphql:isOwner
+
+  # owner can delete posts, comments
+  - operation: Post.delete
+    authenticated: true
+    query: src/permissions/Post.graphql:isOwner
+  - operation: Comment.delete
+    authenticated: true
+    query: src/permissions/Comment.graphql:isOwner
+
+  # author can update the relation tables?
+  - operation: UserPosts.connect
+    authenticated: true
+    query: src/permissions/Post.graphql:userIsAuthor
+
+  - operation: UserComments.connect
+    authenticated: true
+    query: src/permissions/Comment.graphql:userIsAuthor
+
+  # this doesnt check nearly enough
+  - operation: PostComments.connect
+    authenticated: true
+    query: src/permissions/Comment.graphql:postExists
+
+rootTokens:
+  - seed-script

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "init": "graphcool-framework init",
+    "local": "graphcool-framework local up",
+    "deploy": "graphcool-framework deploy"
+  },
+  "dependencies": {
+    "graphcool-framework": "^0.11.4",
+    "graphcool-lib": "^0.1.4",
+    "node-fetch": "^1.7.3"
+  }
+}

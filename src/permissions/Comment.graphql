@@ -1,0 +1,34 @@
+query isOwner($user_id: ID!, $node_id: ID!) {
+  SomeCommentExists(filter: {
+    id: $node_id
+    author: {
+      id: $user_id
+    }
+  })
+}
+
+query isOwnerCreate($user_id: ID!, $input_authorId: ID!) {
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $input_authorId
+    }]
+  })
+}
+
+query userIsAuthor($user_id: ID!, $authorUser_id: ID!) {
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $authorUser_id
+    }]
+  })
+}
+
+query postExists($postPost_id: ID!) {
+  SomePostExists(filter: {
+    id: $postPost_id
+  })
+}
